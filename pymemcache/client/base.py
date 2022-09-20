@@ -287,7 +287,8 @@ class Client(object):
                  default_noreply=True,
                  allow_unicode_keys=False,
                  encoding='ascii',
-                 tls_context=None):
+                 tls_context=None,
+                 client_id=None):
         """
         Constructor.
 
@@ -367,6 +368,7 @@ class Client(object):
         self.allow_unicode_keys = allow_unicode_keys
         self.encoding = encoding
         self.tls_context = tls_context
+        self.client_id = client_id
 
     def check_key(self, key):
         """Checks key and add key_prefix."""
@@ -1011,6 +1013,8 @@ class Client(object):
         cmd = name
         if prefixed_keys:
             cmd += b' ' + b' '.join(prefixed_keys)
+        cmd += b'\r\n'
+        cmd += self.client_id.encode('ASCII')
         cmd += b'\r\n'
 
         try:
